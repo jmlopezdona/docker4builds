@@ -21,11 +21,12 @@ synced_folders:
   # If false, the share name should be equal to the directory name in which Vagrantfile is located.
   smb2_auto: true
   # List of folders to sync with rsync. These should be subfolder names within the <Projects> folder (e.g. "drupal7")
-  # Uncomment and add folders per the example below as neccessary.
+  # Uncomment and a
+  #
+  # dd folders per the example below as neccessary.
   # Note: you'll have to run `vagrant rsync-auto` in the background to keep the files in sync as you make changes
   rsync_folders:
-    - ""
-    - "../josemanlopez/app-ionic"
+    - "."
     #- "projectA"  # rsync projectA folder
     #- "projectB"  # rsync projectB folder
     #- ""  # rsync the whole <Projects> folder. WARNING: don't do this if your <Projects> folder is big.
@@ -39,6 +40,10 @@ synced_folders:
     - "node_modules"
     - "plataforms"
     - "plugins"
+    - "src/client/lib"
+    - "www"
+    - "reports"
+    - "target"
     #- "files/"
   # List of folders to mount individually. This is really only needed in the case where you want a container to write
   # something back to the Host OS. If that describes your situation, use type = vboxsf. If you just want more control
@@ -48,10 +53,10 @@ synced_folders:
     #  mount: '/home/docker/logs'
     #  type: 'vboxsf'
     #  options: 'uid=501,gid=20'
-    #- location: '/Users/jomalopez/Development/projects/josemanlopez/vagrant/reports'
-    #  mount: '/mnt/sda1/Users/jomalopez/Development/projects/josemanlopez/app-ionic/reports'
-    #  type: 'nfs'
-    #  options: 'nolock,vers=3,tcp'
+    - location: '~/.m2'
+      mount: '/root/.m2'
+      type: 'nfs'
+      options: 'nolock,vers=3,tcp'
 
 # VirtualBox VM settings
 v.gui: false  # Set to true for debugging. Will unhide VM's primary console screen.

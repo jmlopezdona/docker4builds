@@ -1,0 +1,8 @@
+# hosts
+# this file is an inventory that Ansible is using to address remote servers.
+Make sure to replace the information with your specific setup and variables
+that you don't want to provide for every command.
+
+[docker]
+# host properties where docker daemon is running
+172.17.42.1 ansible_ssh_user=xavier

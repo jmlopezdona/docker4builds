@@ -1,2 +1,4 @@
 .vagrant
 rsync.log
+/projects/java/spring-boot
+/projects/node/seed-app-ionic
