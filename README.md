@@ -4,7 +4,9 @@
 
 > One of the many innovative uses of Docker that we’ve seen on our projects is a technique to manage > build-time dependencies. In the past, it was common to run build agents on an OS, augmented with dependencies needed for the target build. But with Docker it is possible to run the compilation step in an isolated environment complete with dependencies without contaminating the build agent. This technique of using Docker for builds has proven particularly useful for compiling Golang binaries, and the golang-builder container is available for this very purpose.
 
-Using docker-machine in Windows or Mac OSX has [performance problems with shared volumes](http://oliverguenther.de/2015/05/docker-host-volume-synchronization/) in VirtualBox (when it's using vboxsf, VirtualBox Shared Folders). Therefore, we are using a custom [vagrant boot2docker box](https://github.com/blinkreaction/boot2docker-vagrant)
+Thoughts and motivations to have [A productive development environment with Docker on OS X](http://www.ybrikman.com/writing/2015/05/19/docker-osx-dev/)
+
+Using docker-machine in Windows or Mac OS X has [performance problems with shared volumes](http://oliverguenther.de/2015/05/docker-host-volume-synchronization/) in VirtualBox (when it's using vboxsf, VirtualBox Shared Folders). Therefore, we are using a custom [vagrant boot2docker box](https://github.com/blinkreaction/boot2docker-vagrant)
 
 Next figure show overview approach:
 
@@ -16,10 +18,12 @@ Next figure show overview approach:
 
 # Install
 
-[Install Vagrant, VirtualBox (and Babun  A Linux-type shell, **Windows only**)](https://github.com/blinkreaction/boot2docker-vagrant)
+1. [Install Vagrant, VirtualBox (and Babun  A Linux-type shell, **Windows only**)](https://github.com/blinkreaction/boot2docker-vagrant)
+
+2. Clone this repository and up vagrant box
 
 ```bash
-git clone https://gitlab.com/digital-architectures/docker4builds.git
+https://github.com/jmlopezdona/docker4builds.git
 cd docker4builds
 vagrant up
 ```
@@ -46,7 +50,7 @@ Next, we include instructions about two projects examples. For your project, you
 
 ```bash
 cd docker4builds
-git clone https://gitlab.com/digital-architectures/seed-app-ionic.git ./projects/node/seed-app-ionic
+git clone https://github.com/jmlopezdona/seed-app-ionic.git ./projects/node/seed-app-ionic
 vagrant ssh
 docker build -t "node-sample:latest" --no-cache ./projects/node
 docker run -it --rm -p 8100:8100 -v $PWD/projects/node/seed-app-ionic:/opt/src/seed-app-ionic -w /opt/src/seed-app-ionic node-sample:latest
@@ -56,6 +60,18 @@ gulp build --mocks
 ionic serve
 ```
 You can check the page: http://192.168.10.10:8100/
+
+Build a image can spend a lot of time, but you can upload your docker build image and reusing without rebuild by every team mate. For example, using my docker hub account (you must use yours):
+
+```bash
+docker login
+docker build -t "jmlopezdona/seed-app-ionic-build:latest" --no-cache ./projects/node
+docker push jmlopezdona/seed-app-ionic-build:latest
+```
+
+```bash
+docker run -it --rm -p 8100:8100 -v $PWD/projects/node/seed-app-ionic:/opt/src/seed-app-ionic -w /opt/src/seed-app-ionic jmlopezdona/seed-app-ionic-build:latest
+```
 
 ## Java sample
 
@@ -74,7 +90,28 @@ Because we are sharing with nfs the .m2 folder inside VM VirtualBox, Maven artef
 
 NOTE: we have included the parameter ```--rm``` when run the docker container to remove it when exit. But we don't lost the build files because we are using a volumen with the VM VirtualBox in the proyect (```-v $PWD/spring-boot:/opt/src/spring-boot```)
 
-# Common commands
+# References
+
+- [Docker Cheat Sheet](https://github.com/wsargent/docker-cheat-sheet)
+- [What IP do I access when using docker and boot2docker?](http://webiphany.com/technology/2014/06/12/what-ip-do-i-access-when-using-docker-and-boot2docker.html)
+- [A productive development environment with Docker on OS X](http://www.ybrikman.com/writing/2015/05/19/docker-osx-dev/)
+- [Rsync exclude according to .gitignore](http://stackoverflow.com/questions/13713101/rsync-exclude-according-to-gitignore-hgignore-svnignore-like-filter-c)
+- [Sharing files with host machine](https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine)
+- [Understanding Volumes in Docker](http://container-solutions.com/understanding-volumes-docker/)
+- [Docker NFS, AWS EFS & Samba/CIFS Volume Plugin](https://github.com/gondor/docker-volume-netshare)
+- [Exposing mounts within Containers](https://forums.docker.com/t/exposing-mounts-within-containers/2479/3)
+- [Sharing Host Volumes with Docker Containers](http://oliverguenther.de/2015/05/docker-host-volume-synchronization/)
+- [Docker Machine NFS](https://github.com/adlogix/docker-machine-nfs)
+- [What's the right way to setup a development environment on OS X with Docker?](http://stackoverflow.com/questions/30090007/whats-the-right-way-to-setup-a-development-environment-on-os-x-with-docker)
+
+# TODO
+
+- Develop base images to mobile/web projects, and later do specific project images
+- Proxy configuration
+- Test Windows configuration
+- Using new docker native (beta)
+
+# Appendix: Common commands
 
 ## Docker
 
@@ -111,25 +148,3 @@ eval "$(docker-machine env <machine-name>)"
 # Get default ip
 docker-machine ip default
 ```
-
-# References
-
-- https://github.com/wsargent/docker-cheat-sheet#exposing-ports
-- http://webiphany.com/technology/2014/06/12/what-ip-do-i-access-when-using-docker-and-boot2docker.html
-- http://www.ybrikman.com/writing/2015/05/19/docker-osx-dev/
-- http://stackoverflow.com/questions/13713101/rsync-exclude-according-to-gitignore-hgignore-svnignore-like-filter-c
-- https://github.com/rocker-org/rocker/wiki/Sharing-files-with-host-machine
-- http://container-solutions.com/understanding-volumes-docker/
-- https://github.com/gondor/docker-volume-netshare
-- https://forums.docker.com/t/exposing-mounts-within-containers/2479/3
-- http://oliverguenther.de/2015/05/docker-host-volume-synchronization/
-- https://github.com/adlogix/docker-machine-nfs
-- https://github.com/brikis98/docker-osx-dev
-- http://stackoverflow.com/questions/25672924/run-bower-from-root-user-its-possible-how
-
-
-# TODO
-
-- Develop base images to mobile/web projects, and later do specific project images
-- Proxy configuration
-- Test Windows configuration
