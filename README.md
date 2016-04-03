@@ -12,7 +12,7 @@ Next figure show overview approach:
 - It's not necessary install any tools to build the projects in the host machine, only you need use your favorite IDE and a SCM client (for example git) to pull/push the source code.
 - We are using rsync type with source folder to keep file watcher functionalities inside docker container, for example, gulp/nodejs watchers.
 
-![Overview docker4builds](./docker4builds-overview.png)
+![Overview docker4builds](./docker4builds-overview.png?raw=true)
 
 # Install
 
