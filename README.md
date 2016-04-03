@@ -80,9 +80,9 @@ cd docker4builds
 git clone https://github.com/spring-projects/spring-boot.git ./projects/java/spring-boot
 vagrant ssh
 docker build -t "java-sample:latest" --no-cache ./projects/java
-docker run -it --rm -p 8080:8080 -v /root/.m2:/root/.m2 -v $PWD/projects/node/spring-boot:/opt/src/spring-boot -w /opt/src/spring-boot/spring-boot-samples/spring-boot-sample-web-static java-sample:latest
+docker run -it --rm -p 8080:8080 -v /root/.m2:/root/.m2 -v $PWD/projects/java/spring-boot:/opt/src/spring-boot -w /opt/src/spring-boot/spring-boot-samples/spring-boot-sample-web-static java-sample:latest
 mvn clean package
-java -jar ./target/*.jar
+java -jar ./target/*.war
 ```
 You can check the page: http://192.168.10.10:8080/
 
