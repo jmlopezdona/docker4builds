@@ -35,4 +35,7 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | b
     # Install package to build app
     && npm install -g cordova ionic gulp bower jscs
 
+RUN mkdir /root/.ionic
+ADD ./.ionic/* /root/.ionic
+
 CMD ["/bin/bash"]
