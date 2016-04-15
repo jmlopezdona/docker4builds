@@ -130,6 +130,8 @@ docker exec -it [container-id] bash
 docker inspect $(docker ps -q) | grep IPA
 # Restart container that is stopped
 docker start -ai 3aac3a0d824e
+# See logs
+docker logs --follow 3aac3a0d824e
 ```
 
 # Docker-machine
