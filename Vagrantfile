@@ -344,4 +344,10 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    #config.proxy.http     = "http://172.31.219.30:8080"
+    #config.proxy.https    = "http://172.31.219.30:8080"
+    #config.proxy.no_proxy = "localhost,127.0.0.1"
+  end
+
 end
