@@ -67,4 +67,6 @@ gulp e2e --standalone --mocks
 
 ---
 
+https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
+
 TODO: see sauce-tunnel npm plugin
